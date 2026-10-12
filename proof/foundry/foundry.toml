@@ -1,0 +1,6 @@
+[profile.default]
+test = "test"
+out = "out"
+cache_path = "cache"
+ffi = false
+optimizer = false

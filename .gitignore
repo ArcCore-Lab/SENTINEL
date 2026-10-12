@@ -1,0 +1,11 @@
+proof/foundry/out/
+proof/foundry/cache/
+*.core
+.env
+node_modules/
+.deps/
+.agents/
+.aws/
+.codex/
+submission/
+evidence/
