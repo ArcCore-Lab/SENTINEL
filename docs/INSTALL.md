@@ -29,7 +29,7 @@ cd "$SENTINEL_ROOT"
 node .deps/agh-runtime/agnes.mjs --version
 ```
 
-当前本机 `.deps/agnes-harness` 无 `.git` 元数据，但其非忽略文件的 Git 树哈希与官方固定提交的树哈希 `1bc3b25df5d0a423f9e982e64608e075529aa6fe` 一致，见来源核验记录（见赛事提交包）。这不检查被忽略的 `node_modules` 和构建输出；干净重建时仍须通过上面的 Git 提交校验。
+当前本机 `.deps/agnes-harness` 无 `.git` 元数据，但其非忽略文件的 Git 树哈希与官方固定提交的树哈希 `1bc3b25df5d0a423f9e982e64608e075529aa6fe` 一致，见[来源核验记录](../evidence/agh-source-tree-verification.log)。这不检查被忽略的 `node_modules` 和构建输出；干净重建时仍须通过上面的 Git 提交校验。
 
 ## 2. 在项目内安装离线 Solidity 工具
 
@@ -56,7 +56,7 @@ npm install --prefix "$SENTINEL_ROOT/.deps/tools/solcjs" \
 
 本机原有的 Foundry 发布归档在一次失败的恢复下载后被误删，当前保有经核对的 Forge 二进制和官方归档摘要。官方归档 URL 于 2026-10-11 连接超时，所以上面的 Foundry 下载步骤仍未完整验收；不得把本机既有二进制当作空目录安装验收。
 
-2026-10-11 已在项目内新目录从固定 AGH 源码归档重建：源码 Git 树与官方提交相同；上面的 npm 命令安装 pnpm 10.34.5，47 个 workspace 的依赖通过项目 pnpm 缓存离线安装（467 个包，0 下载），并用 `pnpm --filter @agnes/cli build:local` 构建出 Node 26.2.0 独立运行时。该源码的另一份独立构建已在全新 `AGH_HOME` 得到空会话列表后正常停止。solc-js 0.8.36 也从项目 npm 缓存独立离线安装。见重建记录（见赛事提交包）。此验证使用官方提交归档和既有项目缓存，尚不能证明新机器 Git clone、联网下载依赖或 Foundry 归档获取成功。
+2026-10-11 已在项目内新目录从固定 AGH 源码归档重建：源码 Git 树与官方提交相同；上面的 npm 命令安装 pnpm 10.34.5，47 个 workspace 的依赖通过项目 pnpm 缓存离线安装（467 个包，0 下载），并用 `pnpm --filter @agnes/cli build:local` 构建出 Node 26.2.0 独立运行时。该源码的另一份独立构建已在全新 `AGH_HOME` 得到空会话列表后正常停止。solc-js 0.8.36 也从项目 npm 缓存独立离线安装。见[重建记录](../evidence/agh-clean-rebuild.log)。此验证使用官方提交归档和既有项目缓存，尚不能证明新机器 Git clone、联网下载依赖或 Foundry 归档获取成功。
 
 ## 3. 验证
 
@@ -64,6 +64,8 @@ npm install --prefix "$SENTINEL_ROOT/.deps/tools/solcjs" \
 
 ```bash
 ./.deps/agnes-harness/node_modules/.bin/tsx proof/agh-foundry-smoke.mjs
+node proof/test-evidence-safety.mjs
+node proof/check-technical-readiness.mjs
 ```
 
-模拟结果仅证明本机 AGH→MCP→Foundry 工具链。本公开仓库不含历史会话与日志；取得赛事提交的证据 ZIP 并将其中 `evidence/`、`reports/` 放回仓库后，才可运行 `node proof/test-evidence-safety.mjs` 与 `node proof/check-technical-readiness.mjs` 离线复核既有轨迹。要复跑真实 Agnes 模型，必须先用赛事 Key 完成 `proof/agh-agnes-real-probe.mjs` 的 `config.test/save`；Key 只从标准输入传入，AGH 私有 home 位于被忽略的 `.deps/agh-real-home`。不要把 Key 写入脚本、公开日志或提交包。真实复跑命令见 [README](../README.md)。OpenZeppelin 历史对照使用包内保留 MIT 许可证和 SHA-256 固定的官方 v4.9.4/v4.9.5 源码，命令为 `./.deps/agnes-harness/node_modules/.bin/tsx proof/agh-agnes-real-counter.mjs openzeppelin`；详细证据见实测报告（见赛事提交包）。
+模拟结果仅证明本机 AGH→MCP→Foundry 工具链；最后一条只检查随源码提供的历史真实轨迹和报告。要复跑真实 Agnes 模型，必须先用赛事 Key 完成 `proof/agh-agnes-real-probe.mjs` 的 `config.test/save`；Key 只从标准输入传入，AGH 私有 home 位于被忽略的 `.deps/agh-real-home`。不要把 Key 写入脚本、公开日志或提交包。真实复跑命令见 [README](../README.md#最小技术验证)。OpenZeppelin 历史对照使用包内保留 MIT 许可证和 SHA-256 固定的官方 v4.9.4/v4.9.5 源码，命令为 `./.deps/agnes-harness/node_modules/.bin/tsx proof/agh-agnes-real-counter.mjs openzeppelin`；详细证据见[实测报告](../reports/openzeppelin_multicall.md)。

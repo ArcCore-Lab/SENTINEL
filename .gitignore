@@ -2,6 +2,7 @@ proof/foundry/out/
 proof/foundry/cache/
 *.core
 .env
+.env.*
 node_modules/
 .deps/
 .agents/
@@ -9,3 +10,15 @@ node_modules/
 .codex/
 submission/
 evidence/
+
+# Local run reports, research notes, and recording artifacts
+/reports/
+/docs/DECISIONS.md
+/docs/OFFICIAL_RESEARCH.md
+/docs/PONYTAIL_AUDIT.md
+/docs/REAL_PROJECT_CANDIDATES.md
+/docs/SUBMISSION_CHECKLIST.md
+/docs/TASKS.md
+/docs/fixtures/
+/proof/record-agh-counter-lifecycle.mjs
+/proof/run-native-demo.sh
